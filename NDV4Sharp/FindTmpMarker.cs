@@ -126,6 +126,11 @@ namespace NDV4Sharp
 
             try
             {
+                SqlCmd.CommandText = @"DELETE FROM BinMarker";
+                SqlCmd.ExecuteNonQuery();
+                SqlCmd.CommandText = @"DELETE FROM BinName";
+                SqlCmd.ExecuteNonQuery();
+
                 foreach (var filter in lParentFilters)
                 {
                     int i = 1;
@@ -164,7 +169,7 @@ namespace NDV4Sharp
                                 string marker = match.Value;
 
                                 SqlCmd.CommandText = @"UPDATE WorkMarker SET markerInBin = $markerInBin WHERE marker = $marker";
-                                SqlCmd.Parameters.AddWithValue("$markerInBin", "YES");
+                                SqlCmd.Parameters.AddWithValue("$markerInBin", "1");
                                 SqlCmd.Parameters.AddWithValue("$marker", marker);
                                 
                                 
@@ -186,6 +191,7 @@ namespace NDV4Sharp
                                 //SqlCmd.Parameters.AddWithValue("$pathBin", pathBin);
 
                                 //SqlCmd.ExecuteNonQuery();
+                                
 
                                 SqlCmd.CommandText = @"INSERT INTO BinMarker 
                                             (idBin,

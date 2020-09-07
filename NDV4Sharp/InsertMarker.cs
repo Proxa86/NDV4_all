@@ -13,11 +13,24 @@ namespace NDV4Sharp
     class InsertMarker
     {
         FolderBrowserDialog fbd;
-        public InfoCreateProject info { get; set; }
+        public static SQLiteConnection DbConn { get; set; }
+
+        public static SQLiteCommand SqlCmd { get; set; }
+        public static string NameProject { get; set; }
+        public static string PathNewLocation { get; set; }
+
+        public static string PathSourcesFolder { get; set; }
+
+        public static string DbFileName { get; set; }
 
         public InsertMarker()
         {
             //info = new InfoCreateProject();
+            SqlCmd = new SQLiteCommand();
+            DbConn = new SQLiteConnection();
+            NameProject = InfoCreateProject.NameProject;
+            PathNewLocation = InfoCreateProject.PathNewLocation;
+            DbFileName = InfoCreateProject.DbFileName;
 
         }
         public InsertMarker(FolderBrowserDialog fbd)
@@ -32,16 +45,17 @@ namespace NDV4Sharp
             DataTable dTable = new DataTable();
             String sqlQuery;
 
-            if (InfoCreateProject.DbConn.State != ConnectionState.Open)
+            if (DbConn.State != ConnectionState.Open)
             {
-                MessageBox.Show("Open connection with database");
-                return;
+                DbConn = new SQLiteConnection("Data Source=" + PathNewLocation + "\\" + NameProject + "\\" + DbFileName + ";Version=3;");
+                DbConn.Open();
+                SqlCmd.Connection = DbConn;
             }
 
             try
             {
                 sqlQuery = "SELECT * FROM WorkMarker WHERE extension = '.cs'";
-                SQLiteDataAdapter adapter = new SQLiteDataAdapter(sqlQuery, InfoCreateProject.DbConn);
+                SQLiteDataAdapter adapter = new SQLiteDataAdapter(sqlQuery, DbConn);
                 adapter.Fill(dTable);
 
                 int i;
@@ -56,10 +70,10 @@ namespace NDV4Sharp
 
 
 
-                        InfoCreateProject.SqlCmd.CommandText = @"UPDATE WorkMarker SET marker = $marker WHERE pathLabFiles = $pathLabFiles";
-                        InfoCreateProject.SqlCmd.Parameters.AddWithValue("$marker", "tmp" + i.ToString("00000000"));
-                        InfoCreateProject.SqlCmd.Parameters.AddWithValue("$pathLabFiles", pathSrcLab);
-                        InfoCreateProject.SqlCmd.ExecuteNonQuery();
+                        SqlCmd.CommandText = @"UPDATE WorkMarker SET marker = $marker WHERE pathLabFiles = $pathLabFiles";
+                        SqlCmd.Parameters.AddWithValue("$marker", "tmp" + i.ToString("00000000"));
+                        SqlCmd.Parameters.AddWithValue("$pathLabFiles", pathSrcLab);
+                        SqlCmd.ExecuteNonQuery();
 
                         using (StreamWriter sw = new StreamWriter(new FileStream(pathSrcLab, FileMode.Append)))
                         {
@@ -73,7 +87,7 @@ class tmp{1}{{}}
                             sw.Close();
                         }
                         // Запись в Log.txt находящегося возле бинарника
-                        string pathLogFile = InfoCreateProject.PathNewLocation + "\\" + InfoCreateProject.NameProject + "\\logInsertMarker.txt";
+                        string pathLogFile = PathNewLocation + "\\" + NameProject + "\\logInsertMarker.txt";
                         if (!File.Exists(pathLogFile))
                         {
                             using (StreamWriter sw = new StreamWriter(pathLogFile, false, System.Text.Encoding.Default))

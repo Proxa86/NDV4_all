@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.IO;
 using System.Data.SQLite;
 using Microsoft.VisualBasic.FileIO;
+using Microsoft.Office.Interop.Excel;
 
 namespace NDV4Sharp
 {
@@ -70,20 +71,112 @@ namespace NDV4Sharp
         private void bOK_Click(object sender, EventArgs e)
         {
 
+
             NameProject = tbNameProject.Text;
             if (NameProject == "")
             {
                 MessageBox.Show("Please, enter name project!");
+            }
+            if(tbLocationProject.Text == "" || tbSourceFolder.Text == "")
+            {
+                MessageBox.Show("Please, enter location or source folder", "Error");
+                Close();
+                return;
             }
 
             DbFileName = NameProject + ".sqlite";
 
             DirectoryInfo dirInfo = new DirectoryInfo(PathNewLocation + "\\" + NameProject);
             if (!dirInfo.Exists)
+            {
                 dirInfo.Create();
+                if (!File.Exists(PathNewLocation + "\\" + DbFileName))
+                {
+                    SQLiteConnection.CreateFile(PathNewLocation + "\\" + NameProject + "\\" + DbFileName);
+                    
+                }
+                    
+            }    
+            else
+            {
+                MessageBox.Show("This name project '" + NameProject + "' is exists!\nPlease, enter other name.", "Information");
+                return;
+                // Не получилось убить процесс, который захватывает БД
+                // Такая папка существует, удалить?
+                DialogResult result = MessageBox.Show("Project " + dirInfo + " already exists!\nDelete project " + dirInfo, "Attation!", MessageBoxButtons.OKCancel,MessageBoxIcon.Information);
+                if (result == DialogResult.OK)
+                {
+                    try
+                    {
+                        if (DbConn.State != ConnectionState.Open)
+                        {
+                           
+                            Directory.Delete(PathNewLocation + "\\" + NameProject, true);
+                            Close();
+                            return;
+                        }
+                    }  
+                    catch(Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                        //MessageBox.Show("This program will be restart!");
+                        //System.Windows.Forms.Application.Restart();
+                        //Close();
+                        //var exe = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
+                        //System.Diagnostics.Process[] local_procs = System.Diagnostics.Process.GetProcesses();
+                        //System.Diagnostics.Process target_proc = local_procs.First(p => p.ProcessName == exe);
+                        //target_proc.Kill();
+                        //Directory.Delete(PathNewLocation + "\\" + NameProject, true);
+                        //return;
 
-            if (!File.Exists(PathNewLocation + "\\" + DbFileName))
-                SQLiteConnection.CreateFile(PathNewLocation + "\\" + NameProject + "\\" + DbFileName);
+                        //var exe = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
+                        //System.Diagnostics.Process[] local_procs = System.Diagnostics.Process.GetProcesses();
+                        //System.Diagnostics.Process target_proc = local_procs.First(p => p.ProcessName == exe);
+                        //target_proc.Kill();
+
+                    }
+                    //finally
+                    //{
+                    //    File.Delete(PathNewLocation + "\\" + NameProject + "\\" + DbFileName);
+                    //}
+                }   
+                else
+                {
+                    if (!File.Exists(PathNewLocation + "\\" + NameProject + "\\" + DbFileName))
+                    {
+                        SQLiteConnection.CreateFile(PathNewLocation + "\\" + NameProject + "\\" + DbFileName);
+                    }   
+                    else
+                    {
+                        result = MessageBox.Show("This " + DbFileName + " already exists!\nClear " + DbFileName + "?", "Attation!", MessageBoxButtons.OKCancel, MessageBoxIcon.Information, MessageBoxDefaultButton.Button2);
+                        if (result == DialogResult.OK)
+                        {
+                            try
+                            {
+                                DbConn = new SQLiteConnection("Data Source=" + PathNewLocation + "\\" + NameProject + "\\" + DbFileName + ";Version=3;");
+                                DbConn.Open();
+                                SqlCmd.Connection = DbConn;
+                                SqlCmd.CommandText = @"DELETE FROM WorkMarker";
+                                SqlCmd.ExecuteNonQuery();
+                                SqlCmd.CommandText = @"DELETE FROM BinName";
+                                SqlCmd.ExecuteNonQuery();
+                                SqlCmd.CommandText = @"DELETE FROM BinMarker";
+                                SqlCmd.ExecuteNonQuery();
+                                DbConn.Close();
+
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine(ex.Message);//здесь обрабатывай ошибки
+                            }
+                        }
+                        else Close();
+                    }
+                }
+            }
+            
+
+                
             
             try
             {
@@ -115,6 +208,8 @@ namespace NDV4Sharp
                                         " idBin TEXT," +
                                         " markerBin TEXT)";
                 SqlCmd.ExecuteNonQuery();
+                DbConn.Close();
+                SqlCmd.Connection.Close();
             }
             catch (SQLiteException ex)
             {
@@ -190,10 +285,13 @@ namespace NDV4Sharp
                         SqlCmd.Parameters.AddWithValue("$pathOrigFiles", pathOrigVer);
                         SqlCmd.Parameters.AddWithValue("$pathLabFiles", pathLabVer);
                         SqlCmd.Parameters.AddWithValue("$extension", Path.GetExtension(pathSrc));
-
                         SqlCmd.ExecuteNonQuery();
 
+
                     }
+                    
+                    DbConn.Close();
+                    SqlCmd.Connection.Close();
                 }
                 catch (Exception ex)
                 {
@@ -201,14 +299,13 @@ namespace NDV4Sharp
                 }
             }
 
-
-            else
-            {
-
-            }
-
             new InfoCreateProject(NameProject, PathNewLocation, PathSourcesFolder, DbFileName, DbConn, SqlCmd);
 
+            Close();
+        }
+
+        private void bCancel_Click(object sender, EventArgs e)
+        {
             Close();
         }
     }

@@ -15,16 +15,13 @@ namespace NDV4Sharp
         public static SQLiteConnection DbConn { get; set; }
 
         public static SQLiteCommand SqlCmd { get; set; }
-        public DataTable dTableSrc { get; set; }
-        public DataTable dTableBin { get; set; }
         public string SqlQuery { get; set; }
         public WorkExcel()
         {
             DbConn = InfoOpenProject.DbConn;
             SqlCmd = InfoOpenProject.SqlCmd;
 
-            dTableSrc = new DataTable();
-            dTableBin = new DataTable();
+            
 
             if (InfoOpenProject.DbConn.State != ConnectionState.Open)
             {
@@ -46,6 +43,7 @@ namespace NDV4Sharp
                 worksheet.Cells[1, "A"] = "Number marker";
                 worksheet.Cells[1, "B"] = "Path";
 
+                DataTable dTableSrc = new DataTable();
                 SqlQuery = "SELECT * FROM WorkMarker WHERE markerInBin = 1";
                 SQLiteDataAdapter adapter = new SQLiteDataAdapter(SqlQuery, InfoOpenProject.DbConn);
                 adapter.Fill(dTableSrc);
@@ -135,29 +133,48 @@ namespace NDV4Sharp
                 //SQLiteDataAdapter adapterSrc = new SQLiteDataAdapter(SqlQuery, InfoOpenProject.DbConn);
                 //adapterSrc.Fill(dTableSrc);
 
-                SqlQuery = "SELECT * FROM BinMarker";
+                DataTable dTableBinName = new DataTable();
+                DataTable dTableBinMarker = new DataTable();
+                DataTable dTableNameSrc = new DataTable();
+                SqlQuery = "SELECT * FROM BinName";
                 SQLiteDataAdapter adapterBin = new SQLiteDataAdapter(SqlQuery, InfoOpenProject.DbConn);
-                adapterBin.Fill(dTableBin);
+                adapterBin.Fill(dTableBinName);
 
-                int i;
+                int i,j;
 
-                if (dTableBin.Rows.Count > 0)
+
+                if (dTableBinName.Rows.Count > 0)
                 {
-                    //for (i = 0; i < dTableBin.Rows.Count; i++)
-                    //{
-                    //    string pathbin = dTableBin.Rows[i].ItemArray[2].ToString();
-                    //    string marker = dTableBin.Rows[i].ItemArray[3].ToString();
+                    for (i = 0; i < dTableBinName.Rows.Count; i++)
+                    {
+                        string pathBin = dTableBinName.Rows[i].ItemArray[3].ToString();
+                        worksheet.Cells[i+1, "A"] = pathBin;
+                        string idBin = dTableBinName.Rows[i].ItemArray[1].ToString();
 
-                    //    SqlQuery = "SELECT pathLabFiles FROM WorkMarker WHERE marker = " + marker;
-                    //    SQLiteDataAdapter adapterSrc = new SQLiteDataAdapter(SqlQuery, InfoOpenProject.DbConn);
-                    //    adapterSrc.Fill(dTableSrc);
-                    //    if (dTableBin.Rows.Count > 0)
-                    //    {
-                    //        worksheet.Cells[i + 1, "B"] = marker.Number;
-                    //        worksheet.Cells[i + 1, "C"] = marker.Path;
-                    //    }
-                    //    worksheet.Columns[1].AutoFit();
-                    //worksheet.Columns[2].AutoFit();
+                        SqlQuery = "SELECT markerBin FROM BinMarker WHERE idBin = " + idBin;
+                        adapterBin = new SQLiteDataAdapter(SqlQuery, InfoOpenProject.DbConn);
+                        adapterBin.Fill(dTableBinMarker);
+                        if (dTableBinMarker.Rows.Count > 0)
+                        {
+                            for (j = 1; j < dTableBinMarker.Rows.Count; j++)
+                            {
+
+                                string marker = dTableBinMarker.Rows[j-1].ItemArray[0].ToString();
+                                SqlQuery = "SELECT pathLabFiles FROM WorkMarker WHERE marker = '" + marker + "'";
+                                adapterBin = new SQLiteDataAdapter(SqlQuery, InfoOpenProject.DbConn);
+                                adapterBin.Fill(dTableNameSrc);
+                                if (dTableNameSrc.Rows.Count > 0)
+                                {
+                                    string pathSrc = dTableNameSrc.Rows[0].ItemArray[0].ToString();
+                                    worksheet.Cells[j + 1, "B"] = marker;
+                                    worksheet.Cells[j + 1, "C"] = pathSrc;
+                                }
+                            }
+                                   
+                        }
+                    }
+                    worksheet.Columns[1].AutoFit();
+                    worksheet.Columns[2].AutoFit();
 
                 }
                 //int i = 1;

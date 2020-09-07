@@ -56,13 +56,11 @@ namespace NDV4Sharp
 
         private void buttonExcel_Click(object sender, EventArgs e)
         {
-            buttonOpenFolderSrc.Enabled = false;
             buttonOpenFolderBin.Enabled = false;
             labelInformation.Text = "Waiting ...";
             BuildReport buildReport = new BuildReport();
             buildReport.buildReportExcel(listBoxReport.SelectedIndex);        
             labelInformation.Text = "Building report - OK";
-            buttonOpenFolderSrc.Enabled = true;
             buttonOpenFolderBin.Enabled = true;
             
         }

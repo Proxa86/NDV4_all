@@ -159,6 +159,7 @@
             this.bCancel.TabIndex = 10;
             this.bCancel.Text = "Cancel";
             this.bCancel.UseVisualStyleBackColor = true;
+            this.bCancel.Click += new System.EventHandler(this.bCancel_Click);
             // 
             // CreateNewProject
             // 

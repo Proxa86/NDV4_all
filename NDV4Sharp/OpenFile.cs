@@ -49,6 +49,10 @@ namespace NDV4Sharp
                     return;
                 }
             }
+            else
+            {
+                return;
+            }
 
             InfoOpenProject.DbConn = DbConn;
             InfoOpenProject.SqlCmd = SqlCmd;
