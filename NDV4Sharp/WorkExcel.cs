@@ -163,7 +163,7 @@ namespace NDV4Sharp
                 SQLiteDataAdapter adapterBin = new SQLiteDataAdapter(SqlQuery, InfoOpenProject.DbConn);
                 adapterBin.Fill(dTableBinName);
 
-                int i,j;
+                int i,j,k=1;
 
 
                 if (dTableBinName.Rows.Count > 0)
@@ -171,7 +171,7 @@ namespace NDV4Sharp
                     for (i = 0; i < dTableBinName.Rows.Count; i++)
                     {
                         string pathBin = dTableBinName.Rows[i].ItemArray[3].ToString();
-                        worksheet.Cells[i+1, "A"] = pathBin;
+                        worksheet.Cells[k, "A"] = pathBin;
                         string idBin = dTableBinName.Rows[i].ItemArray[1].ToString();
 
                         DataTable dTableBinMarker = new DataTable();
@@ -180,22 +180,24 @@ namespace NDV4Sharp
                         adapterBin.Fill(dTableBinMarker);
                         if (dTableBinMarker.Rows.Count > 0)
                         {
-                            for (j = 1; j < dTableBinMarker.Rows.Count; j++)
+                            for (j = 0; j < dTableBinMarker.Rows.Count; j++)
                             {
                                 DataTable dTableNameSrc = new DataTable();
-                                string marker = dTableBinMarker.Rows[j-1].ItemArray[0].ToString();
+                                string marker = dTableBinMarker.Rows[j].ItemArray[0].ToString();
                                 SqlQuery = "SELECT pathLabFiles FROM WorkMarker WHERE marker = '" + marker + "'";
                                 adapterBin = new SQLiteDataAdapter(SqlQuery, InfoOpenProject.DbConn);
                                 adapterBin.Fill(dTableNameSrc);
                                 if (dTableNameSrc.Rows.Count > 0)
                                 {
                                     string pathSrc = dTableNameSrc.Rows[0].ItemArray[0].ToString();
-                                    worksheet.Cells[j + 1, "B"] = marker;
-                                    worksheet.Cells[j + 1, "C"] = pathSrc;
+                                    worksheet.Cells[k + 1, "B"] = marker;
+                                    worksheet.Cells[k + 1, "C"] = pathSrc;
                                 }
+                                ++k;
                             }
                                    
                         }
+                        ++k;
                     }
                     worksheet.Columns[1].AutoFit();
                     worksheet.Columns[2].AutoFit();
@@ -219,9 +221,13 @@ namespace NDV4Sharp
                 //worksheet.Columns[2].AutoFit();
                 //worksheet.Columns[3].AutoFit();
             }
+            catch(System.Runtime.InteropServices.COMException ex)
+            {
+                MessageBox.Show("Excel bloked.\n" + ex.Message);
+            }
             catch (Exception ex)
             {
-                MessageBox.Show("Markers in bin not found!");
+                MessageBox.Show("Markers in bin not found!\n" + ex.Message);
             }
 
 
