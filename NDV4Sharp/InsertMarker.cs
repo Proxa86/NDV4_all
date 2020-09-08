@@ -40,10 +40,12 @@ namespace NDV4Sharp
 
         public async void insertMarker()
         {
+
+
             List<string[]> lParentFilters = new List<string[]>();
 
             DataTable dTable = new DataTable();
-            String sqlQuery;
+            String sqlQuery = "";
 
             if (DbConn.State != ConnectionState.Open)
             {
@@ -54,9 +56,37 @@ namespace NDV4Sharp
 
             try
             {
-                sqlQuery = "SELECT * FROM WorkMarker WHERE extension = '.cs'";
-                SQLiteDataAdapter adapter = new SQLiteDataAdapter(sqlQuery, DbConn);
-                adapter.Fill(dTable);
+                if(Form1.CheckSharp)
+                {
+                    sqlQuery = "SELECT * FROM WorkMarker WHERE extension = '.cs'";
+                    SQLiteDataAdapter adapterSharp = new SQLiteDataAdapter(sqlQuery, DbConn);
+                    adapterSharp.Fill(dTable);
+                }                    
+                else if(Form1.CheckC)
+                {
+                    sqlQuery = "SELECT * FROM WorkMarker WHERE extension = '.c'";
+                    SQLiteDataAdapter adapterC = new SQLiteDataAdapter(sqlQuery, DbConn);
+                    adapterC.Fill(dTable);
+                    sqlQuery = "SELECT * FROM WorkMarker WHERE extension = '.cc'";
+                    SQLiteDataAdapter adapterCC = new SQLiteDataAdapter(sqlQuery, DbConn);
+                    adapterCC.Fill(dTable);
+                    sqlQuery = "SELECT * FROM WorkMarker WHERE extension = '.cpp'";
+                    SQLiteDataAdapter adapterCPP = new SQLiteDataAdapter(sqlQuery, DbConn);
+                    adapterCPP.Fill(dTable);
+                    sqlQuery = "SELECT * FROM WorkMarker WHERE extension = '.cxx'";
+                    SQLiteDataAdapter adapterCXX = new SQLiteDataAdapter(sqlQuery, DbConn);
+                    adapterCXX.Fill(dTable);
+                    sqlQuery = "SELECT * FROM WorkMarker WHERE extension = '.h'";
+                    SQLiteDataAdapter adapterH = new SQLiteDataAdapter(sqlQuery, DbConn);
+                    adapterH.Fill(dTable);
+                    sqlQuery = "SELECT * FROM WorkMarker WHERE extension = '.hh'";
+                    SQLiteDataAdapter adapterHH = new SQLiteDataAdapter(sqlQuery, DbConn);
+                    adapterHH.Fill(dTable);
+                    sqlQuery = "SELECT * FROM WorkMarker WHERE extension = '.hpp'";
+                    SQLiteDataAdapter adapterHPP = new SQLiteDataAdapter(sqlQuery, DbConn);
+                    adapterHPP.Fill(dTable);
+                }
+                    
 
                 int i;
 
@@ -75,16 +105,23 @@ namespace NDV4Sharp
                         SqlCmd.Parameters.AddWithValue("$pathLabFiles", pathSrcLab);
                         SqlCmd.ExecuteNonQuery();
 
-                        using (StreamWriter sw = new StreamWriter(new FileStream(pathSrcLab, FileMode.Append)))
+                        if (Form1.CheckSharp)
                         {
-                            await sw.WriteLineAsync(String.Format(
-    @"
+                            using (StreamWriter sw = new StreamWriter(new FileStream(pathSrcLab, FileMode.Append)))
+                            {
+                                await sw.WriteLineAsync(String.Format(
+        @"
 #if !NUM_MARKER{0}
 class tmp{1}{{}}
 #endif", i.ToString("00000000"), i.ToString("00000000")));
 
 
-                            sw.Close();
+                                sw.Close();
+                            }
+                        }
+                        else if (Form1.CheckC)
+                        {
+
                         }
                         // Запись в Log.txt находящегося возле бинарника
                         string pathLogFile = PathNewLocation + "\\" + NameProject + "\\logInsertMarker.txt";

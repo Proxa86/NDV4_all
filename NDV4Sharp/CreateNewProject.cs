@@ -33,28 +33,23 @@ namespace NDV4Sharp
             tbLocationProject.ReadOnly = true;
             tbSourceFolder.ReadOnly = true;
             tbNameProject.Text = "new_project";
-            
         }
-
         private void CreateNewProject_Load(object sender, EventArgs e)
         {
             DbConn = new SQLiteConnection();
             SqlCmd = new SQLiteCommand();
+
             
         }
 
         private void bLocationProject_Click(object sender, EventArgs e)
-        {
-            
-
+        {            
             OpenFolder openLocation = new OpenFolder();
 
             openLocation.openPathForSaveProject();
 
             PathNewLocation = openLocation.PathNewLocation;
-            tbLocationProject.Text = PathNewLocation;
-
-            
+            tbLocationProject.Text = PathNewLocation;   
         }
 
         private void bSourceFolder_Click(object sender, EventArgs e)
@@ -63,15 +58,11 @@ namespace NDV4Sharp
             openLocation.openPathWithSources();
 
             PathSourcesFolder = openLocation.PathSourcesFolder;
-            tbSourceFolder.Text = PathSourcesFolder;
-
-            
+            tbSourceFolder.Text = PathSourcesFolder;            
         }
 
         private void bOK_Click(object sender, EventArgs e)
         {
-
-
             NameProject = tbNameProject.Text;
             if (NameProject == "")
             {
@@ -92,10 +83,8 @@ namespace NDV4Sharp
                 dirInfo.Create();
                 if (!File.Exists(PathNewLocation + "\\" + DbFileName))
                 {
-                    SQLiteConnection.CreateFile(PathNewLocation + "\\" + NameProject + "\\" + DbFileName);
-                    
-                }
-                    
+                    SQLiteConnection.CreateFile(PathNewLocation + "\\" + NameProject + "\\" + DbFileName);                    
+                }                    
             }    
             else
             {
@@ -174,9 +163,9 @@ namespace NDV4Sharp
                     }
                 }
             }
-            
 
-                
+
+            
             
             try
             {
@@ -222,6 +211,7 @@ namespace NDV4Sharp
                 string pathOrigVersionSrc = PathNewLocation + "\\" + NameProject + "\\Orig\\Src";
                 string pathLabVersionSrc = PathNewLocation + "\\" + NameProject + "\\Lab\\Src";
                 string pathLabVersionBin = PathNewLocation + "\\" + NameProject + "\\Lab\\Bin";
+
                 dirInfo = new DirectoryInfo(pathOrigVersionSrc);
                 if (!dirInfo.Exists)
                     dirInfo.Create();

@@ -110,8 +110,7 @@ namespace NDV4Sharp
             //}
 
 
-            List<string[]> lParentFilters = new List<string[]>(); // список фильтров
-
+            List<string[]> lParentFilters = new List<string[]>(); 
             string pathFolderBin = InfoOpenProject.PathLocation + "\\Lab\\Bin";
             //Dictionary<string, List<string>> dPathBinFileAndListNumberTmpMarker = new Dictionary<string, List<string>>();
             

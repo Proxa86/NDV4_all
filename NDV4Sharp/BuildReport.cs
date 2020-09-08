@@ -18,7 +18,7 @@ namespace NDV4Sharp
                     workExcel.DisplayInExcelFoundMarker();
                     break;
                 case 1:
-                    workExcel.DisplayInExcelNotFoundMarker(ComparisonTmpMarkers.lResultNotFoundMarker);
+                    workExcel.DisplayInExcelNotFoundMarker();
                     break;
                 case 2:
                     workExcel.DisplayInExcelFoundInBinMarker();

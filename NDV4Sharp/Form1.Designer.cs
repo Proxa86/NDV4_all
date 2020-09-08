@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.labelInformation = new System.Windows.Forms.Label();
             this.buttonExcel = new System.Windows.Forms.Button();
             this.listBoxReport = new System.Windows.Forms.ListBox();
             this.bInsertMarker = new System.Windows.Forms.Button();
@@ -36,26 +35,24 @@
             this.createStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.lBInformation = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.buttonOpenFolderBin = new System.Windows.Forms.Button();
+            this.bStartAnalysis = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.cBSharp = new System.Windows.Forms.CheckBox();
+            this.cBCpp = new System.Windows.Forms.CheckBox();
+            this.cBFatran = new System.Windows.Forms.CheckBox();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.menuStrip1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            this.groupBox4.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // labelInformation
-            // 
-            this.labelInformation.AutoSize = true;
-            this.labelInformation.Location = new System.Drawing.Point(13, 203);
-            this.labelInformation.Name = "labelInformation";
-            this.labelInformation.Size = new System.Drawing.Size(0, 13);
-            this.labelInformation.TabIndex = 2;
             // 
             // buttonExcel
             // 
-            this.buttonExcel.Location = new System.Drawing.Point(6, 67);
+            this.buttonExcel.Location = new System.Drawing.Point(6, 69);
             this.buttonExcel.Name = "buttonExcel";
             this.buttonExcel.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.buttonExcel.Size = new System.Drawing.Size(100, 23);
@@ -67,9 +64,9 @@
             // listBoxReport
             // 
             this.listBoxReport.FormattingEnabled = true;
-            this.listBoxReport.Location = new System.Drawing.Point(6, 19);
+            this.listBoxReport.Location = new System.Drawing.Point(3, 21);
             this.listBoxReport.Name = "listBoxReport";
-            this.listBoxReport.Size = new System.Drawing.Size(289, 43);
+            this.listBoxReport.Size = new System.Drawing.Size(303, 43);
             this.listBoxReport.TabIndex = 4;
             // 
             // bInsertMarker
@@ -91,7 +88,7 @@
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(4, 2, 0, 2);
-            this.menuStrip1.Size = new System.Drawing.Size(329, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(323, 24);
             this.menuStrip1.TabIndex = 6;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -110,14 +107,23 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.lBInformation);
             this.groupBox2.Controls.Add(this.listBoxReport);
             this.groupBox2.Controls.Add(this.buttonExcel);
-            this.groupBox2.Location = new System.Drawing.Point(16, 91);
+            this.groupBox2.Location = new System.Drawing.Point(12, 112);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(306, 98);
+            this.groupBox2.Size = new System.Drawing.Size(306, 94);
             this.groupBox2.TabIndex = 8;
             this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Open report";
+            this.groupBox2.Text = "Open report in excel";
+            // 
+            // lBInformation
+            // 
+            this.lBInformation.AutoSize = true;
+            this.lBInformation.Location = new System.Drawing.Point(112, 74);
+            this.lBInformation.Name = "lBInformation";
+            this.lBInformation.Size = new System.Drawing.Size(0, 13);
+            this.lBInformation.TabIndex = 5;
             // 
             // groupBox3
             // 
@@ -129,19 +135,19 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Insert marker";
             // 
-            // buttonOpenFolderBin
+            // bStartAnalysis
             // 
-            this.buttonOpenFolderBin.Location = new System.Drawing.Point(6, 19);
-            this.buttonOpenFolderBin.Name = "buttonOpenFolderBin";
-            this.buttonOpenFolderBin.Size = new System.Drawing.Size(87, 23);
-            this.buttonOpenFolderBin.TabIndex = 1;
-            this.buttonOpenFolderBin.Text = "Start analisys";
-            this.buttonOpenFolderBin.UseVisualStyleBackColor = true;
-            this.buttonOpenFolderBin.Click += new System.EventHandler(this.buttonOpenFolderBin_Click);
+            this.bStartAnalysis.Location = new System.Drawing.Point(6, 19);
+            this.bStartAnalysis.Name = "bStartAnalysis";
+            this.bStartAnalysis.Size = new System.Drawing.Size(87, 23);
+            this.bStartAnalysis.TabIndex = 1;
+            this.bStartAnalysis.Text = "Start analisys";
+            this.bStartAnalysis.UseVisualStyleBackColor = true;
+            this.bStartAnalysis.Click += new System.EventHandler(this.bStartAnalysis_Click);
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.buttonOpenFolderBin);
+            this.groupBox1.Controls.Add(this.bStartAnalysis);
             this.groupBox1.Location = new System.Drawing.Point(111, 29);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(99, 56);
@@ -149,15 +155,60 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Check marker";
             // 
+            // cBSharp
+            // 
+            this.cBSharp.AutoSize = true;
+            this.cBSharp.Location = new System.Drawing.Point(6, 14);
+            this.cBSharp.Name = "cBSharp";
+            this.cBSharp.Size = new System.Drawing.Size(40, 17);
+            this.cBSharp.TabIndex = 10;
+            this.cBSharp.Text = "C#";
+            this.cBSharp.UseVisualStyleBackColor = true;
+            this.cBSharp.CheckedChanged += new System.EventHandler(this.cBSharp_CheckedChanged);
+            // 
+            // cBCpp
+            // 
+            this.cBCpp.AutoSize = true;
+            this.cBCpp.Location = new System.Drawing.Point(6, 37);
+            this.cBCpp.Name = "cBCpp";
+            this.cBCpp.Size = new System.Drawing.Size(57, 17);
+            this.cBCpp.TabIndex = 11;
+            this.cBCpp.Text = "C/C++";
+            this.cBCpp.UseVisualStyleBackColor = true;
+            this.cBCpp.CheckedChanged += new System.EventHandler(this.cBCpp_CheckedChanged);
+            // 
+            // cBFatran
+            // 
+            this.cBFatran.AutoSize = true;
+            this.cBFatran.Location = new System.Drawing.Point(6, 60);
+            this.cBFatran.Name = "cBFatran";
+            this.cBFatran.Size = new System.Drawing.Size(56, 17);
+            this.cBFatran.TabIndex = 12;
+            this.cBFatran.Text = "Fatran";
+            this.cBFatran.UseVisualStyleBackColor = true;
+            this.cBFatran.CheckedChanged += new System.EventHandler(this.cBFatran_CheckedChanged);
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.cBCpp);
+            this.groupBox4.Controls.Add(this.cBFatran);
+            this.groupBox4.Controls.Add(this.cBSharp);
+            this.groupBox4.Location = new System.Drawing.Point(225, 27);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(73, 85);
+            this.groupBox4.TabIndex = 13;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Language";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(329, 201);
+            this.ClientSize = new System.Drawing.Size(323, 211);
+            this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.labelInformation);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
@@ -165,15 +216,17 @@
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.groupBox3.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-        private System.Windows.Forms.Label labelInformation;
         private System.Windows.Forms.Button buttonExcel;
         private System.Windows.Forms.ListBox listBoxReport;
         private System.Windows.Forms.Button bInsertMarker;
@@ -182,8 +235,13 @@
         private System.Windows.Forms.ToolStripMenuItem openStripMenuItem;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.Button buttonOpenFolderBin;
+        private System.Windows.Forms.Button bStartAnalysis;
         private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Label lBInformation;
+        private System.Windows.Forms.CheckBox cBSharp;
+        private System.Windows.Forms.CheckBox cBCpp;
+        private System.Windows.Forms.CheckBox cBFatran;
+        private System.Windows.Forms.GroupBox groupBox4;
     }
 }
 
