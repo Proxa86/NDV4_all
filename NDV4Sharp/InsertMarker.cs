@@ -41,7 +41,6 @@ namespace NDV4Sharp
         public async void insertMarker()
         {
 
-
             List<string[]> lParentFilters = new List<string[]>();
 
             DataTable dTable = new DataTable();
@@ -85,6 +84,9 @@ namespace NDV4Sharp
                     sqlQuery = "SELECT * FROM WorkMarker WHERE extension = '.hpp'";
                     SQLiteDataAdapter adapterHPP = new SQLiteDataAdapter(sqlQuery, DbConn);
                     adapterHPP.Fill(dTable);
+                    sqlQuery = "SELECT * FROM WorkMarker WHERE extension = '.hхх'";
+                    SQLiteDataAdapter adapterHХХ = new SQLiteDataAdapter(sqlQuery, DbConn);
+                    adapterHХХ.Fill(dTable);
                 }
                     
 
@@ -121,7 +123,18 @@ class tmp{1}{{}}
                         }
                         else if (Form1.CheckC)
                         {
+                            using (StreamWriter sw = new StreamWriter(new FileStream(pathSrcLab, FileMode.Append)))
+                            {
+                                await sw.WriteLineAsync(String.Format(
+        @"
+#ifndef NUM_MARKER{0}
+#define NUM_MARKER{1}
+void tmp{2}(){{}};
+#endif", i.ToString("00000000"), i.ToString("00000000"), i.ToString("00000000")));
 
+
+                                sw.Close();
+                            }
                         }
                         // Запись в Log.txt находящегося возле бинарника
                         string pathLogFile = PathNewLocation + "\\" + NameProject + "\\logInsertMarker.txt";

@@ -25,6 +25,8 @@ namespace NDV4Sharp
         public SQLiteConnection DbConn { get; set; }
 
         public SQLiteCommand SqlCmd { get; set; }
+        public System.Windows.Forms.Button BInsert { get; set; }
+  
 
         public CreateNewProject()
         {
@@ -34,6 +36,16 @@ namespace NDV4Sharp
             tbSourceFolder.ReadOnly = true;
             tbNameProject.Text = "new_project";
         }
+
+        public CreateNewProject(System.Windows.Forms.Button button)
+        {
+            InitializeComponent();
+
+            tbLocationProject.ReadOnly = true;
+            tbSourceFolder.ReadOnly = true;
+            tbNameProject.Text = "new_project";
+            BInsert = button;
+        }
         private void CreateNewProject_Load(object sender, EventArgs e)
         {
             DbConn = new SQLiteConnection();
@@ -41,6 +53,7 @@ namespace NDV4Sharp
 
             
         }
+
 
         private void bLocationProject_Click(object sender, EventArgs e)
         {            
@@ -290,8 +303,9 @@ namespace NDV4Sharp
             }
 
             new InfoCreateProject(NameProject, PathNewLocation, PathSourcesFolder, DbFileName, DbConn, SqlCmd);
-
+            BInsert.Enabled = true;
             Close();
+            
         }
 
         private void bCancel_Click(object sender, EventArgs e)

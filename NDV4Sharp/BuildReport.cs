@@ -8,6 +8,9 @@ namespace NDV4Sharp
 {
     class BuildReport
     {
+        public System.Windows.Forms.Button BReport { get; set; }
+        public BuildReport() { }
+
         public void buildReportExcel(int index)
         {
             WorkExcel workExcel = new WorkExcel();

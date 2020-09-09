@@ -29,6 +29,8 @@ namespace NDV4Sharp
             listBoxReport.SelectedIndex = 1;
 
             this.Text = "Есть ли жизнь на марсе?";
+            this.bInsertMarker.Enabled = false;
+            this.buttonExcel.Enabled = false;
 
             this.createStripMenuItem.Click += new EventHandler(this.createStripMenuItem_Click);
             
@@ -55,9 +57,10 @@ namespace NDV4Sharp
 
         private void createStripMenuItem_Click(object sender, EventArgs e)
         {
+            
             if (CheckC || CheckSharp)
             {
-                CreateNewProject createNewProject = new CreateNewProject();
+                CreateNewProject createNewProject = new CreateNewProject(bInsertMarker);
                 createNewProject.Show();
             }
             else
@@ -71,6 +74,7 @@ namespace NDV4Sharp
             //LInformation = "Open project!";
             OpenFile openFileDB = new OpenFile();
             openFileDB.openFileDB();
+            buttonExcel.Enabled = true;
         }
 
         private void cBSharp_CheckedChanged(object sender, EventArgs e)
@@ -81,6 +85,13 @@ namespace NDV4Sharp
                 CheckSharp = true;
                 CheckC = false;
                 CheckFortran = false;
+                cBCpp.Enabled = false;
+                cBFatran.Enabled = false;
+            }
+            else
+            {
+                cBCpp.Enabled = true;
+                cBFatran.Enabled = true;
             }
                 
         }
@@ -93,15 +104,33 @@ namespace NDV4Sharp
                 CheckC = true;
                 CheckSharp = false;
                 CheckFortran = false;
+                cBSharp.Enabled = false;
+                cBFatran.Enabled = false;
+            }
+            else
+            {
+                cBSharp.Enabled = true;
+                cBFatran.Enabled = true;
             }
                 
         }
 
         private void cBFatran_CheckedChanged(object sender, EventArgs e)
         {
-            CheckFortran = true;
-            CheckSharp = false;
-            CheckC = false;
+            CheckBox checkBox = (CheckBox)sender;
+            if (checkBox.Checked == true)
+            {
+                CheckC = false;
+                CheckSharp = false;
+                CheckFortran = true;
+                cBSharp.Enabled = false;
+                cBCpp.Enabled = false;
+            }
+            else
+            {
+                cBSharp.Enabled = true;
+                cBCpp.Enabled = true;
+            }
         }
 
         private void bStartAnalysis_Click(object sender, EventArgs e)

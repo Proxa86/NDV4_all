@@ -92,9 +92,13 @@ namespace NDV4Sharp
                 //worksheet.Columns[1].AutoFit();
                 //worksheet.Columns[2].AutoFit();
             }
+            catch (System.Runtime.InteropServices.COMException ex)
+            {
+                MessageBox.Show("Excel bloked.\n" + ex.Message);
+            }
             catch (Exception ex)
             {
-                MessageBox.Show("Markers in bin not found!");
+                MessageBox.Show("Excel don't install!\n" + ex.Message);
             }
 
 
@@ -227,7 +231,7 @@ namespace NDV4Sharp
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Markers in bin not found!\n" + ex.Message);
+                MessageBox.Show("Excel don't install!\n" + ex.Message);
             }
 
 
@@ -283,7 +287,6 @@ namespace NDV4Sharp
             try
             {
                 var excelApp = new Excel.Application();
-
                 excelApp.Visible = true;
                 excelApp.Workbooks.Add();
                 Excel._Worksheet worksheet = (Excel.Worksheet)excelApp.ActiveSheet;
@@ -291,9 +294,41 @@ namespace NDV4Sharp
                 worksheet.Cells[1, "B"] = "Path";
 
                 DataTable dTableSrc = new DataTable();
-                SqlQuery = "SELECT * FROM WorkMarker WHERE markerInBin <> '1'";
-                SQLiteDataAdapter adapter = new SQLiteDataAdapter(SqlQuery, InfoOpenProject.DbConn);
-                adapter.Fill(dTableSrc);
+                if(Form1.CheckSharp)
+                {
+                    SqlQuery = "SELECT pathLabFiles, marker FROM WorkMarker WHERE extension = '.cs' AND markerInBin is NULL";
+                    SQLiteDataAdapter adapter = new SQLiteDataAdapter(SqlQuery, InfoOpenProject.DbConn);
+                    adapter.Fill(dTableSrc);
+                }
+                    
+                else if(Form1.CheckC)
+                {
+                    SqlQuery = "SELECT pathLabFiles, marker FROM WorkMarker WHERE extension = '.c' AND markerInBin is NULL";
+                    SQLiteDataAdapter adapterC = new SQLiteDataAdapter(SqlQuery, InfoOpenProject.DbConn);
+                    adapterC.Fill(dTableSrc);
+                    SqlQuery = "SELECT pathLabFiles, marker FROM WorkMarker WHERE extension = '.cc' AND markerInBin is NULL";
+                    SQLiteDataAdapter adapterCC = new SQLiteDataAdapter(SqlQuery, InfoOpenProject.DbConn);
+                    adapterCC.Fill(dTableSrc);
+                    SqlQuery = "SELECT pathLabFiles, marker FROM WorkMarker WHERE extension = '.cpp' AND markerInBin is NULL";
+                    SQLiteDataAdapter adapterCPP = new SQLiteDataAdapter(SqlQuery, InfoOpenProject.DbConn);
+                    adapterCPP.Fill(dTableSrc);
+                    SqlQuery = "SELECT pathLabFiles, marker FROM WorkMarker WHERE extension = '.cxx' AND markerInBin is NULL";
+                    SQLiteDataAdapter adapterCXX = new SQLiteDataAdapter(SqlQuery, InfoOpenProject.DbConn);
+                    adapterCXX.Fill(dTableSrc);
+                    SqlQuery = "SELECT pathLabFiles, marker FROM WorkMarker WHERE extension = '.h' AND markerInBin is NULL";
+                    SQLiteDataAdapter adapterH = new SQLiteDataAdapter(SqlQuery, InfoOpenProject.DbConn);
+                    adapterH.Fill(dTableSrc);
+                    SqlQuery = "SELECT pathLabFiles, marker FROM WorkMarker WHERE extension = '.hh' AND markerInBin is NULL";
+                    SQLiteDataAdapter adapterHH = new SQLiteDataAdapter(SqlQuery, InfoOpenProject.DbConn);
+                    adapterHH.Fill(dTableSrc);
+                    SqlQuery = "SELECT pathLabFiles, marker FROM WorkMarker WHERE extension = '.hpp' AND markerInBin is NULL";
+                    SQLiteDataAdapter adapterHPP = new SQLiteDataAdapter(SqlQuery, InfoOpenProject.DbConn);
+                    adapterHPP.Fill(dTableSrc);
+                    SqlQuery = "SELECT pathLabFiles, marker FROM WorkMarker WHERE extension = '.hxx' AND markerInBin is NULL";
+                    SQLiteDataAdapter adapterHXX = new SQLiteDataAdapter(SqlQuery, InfoOpenProject.DbConn);
+                    adapterHXX.Fill(dTableSrc);
+                }
+                
 
                 int i;
 
@@ -301,8 +336,8 @@ namespace NDV4Sharp
                 {
                     for (i = 0; i < dTableSrc.Rows.Count; i++)
                     {
-                        string pathSrcLab = dTableSrc.Rows[i].ItemArray[4].ToString();
-                        string marker = dTableSrc.Rows[i].ItemArray[6].ToString();
+                        string pathSrcLab = dTableSrc.Rows[i].ItemArray[0].ToString();
+                        string marker = dTableSrc.Rows[i].ItemArray[1].ToString();
                         worksheet.Cells[i + 2, "A"] = marker;
                         worksheet.Cells[i + 2, "B"] = pathSrcLab;
                     }
@@ -321,9 +356,13 @@ namespace NDV4Sharp
                 worksheet.Columns[1].AutoFit();
                 worksheet.Columns[2].AutoFit();
             }
+            catch (System.Runtime.InteropServices.COMException ex)
+            {
+                MessageBox.Show("Excel bloked.\n" + ex.Message);
+            }
             catch (Exception ex)
             {
-                MessageBox.Show("Markers not found in bin!");
+                MessageBox.Show("Excel don't install");
             }
 
 
