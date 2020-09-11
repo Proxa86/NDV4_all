@@ -66,7 +66,7 @@
             this.cbCopyFolder.AutoSize = true;
             this.cbCopyFolder.Checked = true;
             this.cbCopyFolder.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbCopyFolder.Location = new System.Drawing.Point(327, 94);
+            this.cbCopyFolder.Location = new System.Drawing.Point(325, 94);
             this.cbCopyFolder.Name = "cbCopyFolder";
             this.cbCopyFolder.Size = new System.Drawing.Size(82, 17);
             this.cbCopyFolder.TabIndex = 8;
@@ -153,7 +153,7 @@
             // 
             // bCancel
             // 
-            this.bCancel.Location = new System.Drawing.Point(133, 151);
+            this.bCancel.Location = new System.Drawing.Point(138, 151);
             this.bCancel.Name = "bCancel";
             this.bCancel.Size = new System.Drawing.Size(75, 23);
             this.bCancel.TabIndex = 10;

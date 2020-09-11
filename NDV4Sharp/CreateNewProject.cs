@@ -253,22 +253,16 @@ namespace NDV4Sharp
                         return;
                     }
 
-                    //Копировать все файлы и перезаписать файлы с идентичным именем
-                    foreach (string pathSrc in Directory.GetFiles(PathSourcesFolder, "*.*",
-                        System.IO.SearchOption.AllDirectories))
+                    using (SQLiteTransaction transation = SqlCmd.Connection.BeginTransaction())
                     {
-                        //string pathSourceSrc = pathSrc.Replace("'", "");
-                        //File.Copy(newPath, newPath.Replace(PathSourcesFolder, pathLabVersionSrc), true);
-                        string pathOrigVer = pathSrc.Replace(PathSourcesFolder, pathOrigVersionSrc);
-                        string pathLabVer = pathSrc.Replace(PathSourcesFolder, pathLabVersionSrc);
-                        //string src = Path.GetFileName(pathSrc);
+                        //Копировать все файлы и перезаписать файлы с идентичным именем
+                        foreach (string pathSrc in Directory.GetFiles(PathSourcesFolder, "*.*",
+                            System.IO.SearchOption.AllDirectories))
+                        {
+                            string pathOrigVer = pathSrc.Replace(PathSourcesFolder, pathOrigVersionSrc);
+                            string pathLabVer = pathSrc.Replace(PathSourcesFolder, pathLabVersionSrc);
 
-
-                        //SqlCmd.CommandText = "INSERT INTO WorkMarker ('nameFile', 'pathFolderSrc', 'pathOrigFiles', 'pathLabFiles', 'extension') " +
-                        //    "values ('" + pathSourceSrc + "', '" + pathSourceSrc + "" + "' , '" + pathOrigVer + 
-                        //    "', '" + pathLabVer + "', '" + Path.GetExtension(pathSrc) + "')";
-
-                        SqlCmd.CommandText = @"INSERT INTO WorkMarker 
+                            SqlCmd.CommandText = @"INSERT INTO WorkMarker 
                                             (nameFile, 
                                             pathFolderSrc, 
                                             pathOrigFiles, 
@@ -283,16 +277,15 @@ namespace NDV4Sharp
                                             $extension
                                             )";
 
-                        SqlCmd.Parameters.AddWithValue("$nameFile", Path.GetFileName(pathSrc));
-                        SqlCmd.Parameters.AddWithValue("$pathFolderSrc", pathSrc);
-                        SqlCmd.Parameters.AddWithValue("$pathOrigFiles", pathOrigVer);
-                        SqlCmd.Parameters.AddWithValue("$pathLabFiles", pathLabVer);
-                        SqlCmd.Parameters.AddWithValue("$extension", Path.GetExtension(pathSrc));
-                        SqlCmd.ExecuteNonQuery();
-
-
+                            SqlCmd.Parameters.AddWithValue("$nameFile", Path.GetFileName(pathSrc));
+                            SqlCmd.Parameters.AddWithValue("$pathFolderSrc", pathSrc);
+                            SqlCmd.Parameters.AddWithValue("$pathOrigFiles", pathOrigVer);
+                            SqlCmd.Parameters.AddWithValue("$pathLabFiles", pathLabVer);
+                            SqlCmd.Parameters.AddWithValue("$extension", Path.GetExtension(pathSrc));
+                            SqlCmd.ExecuteNonQuery();
+                        }
+                        transation.Commit();
                     }
-                    
                     DbConn.Close();
                     SqlCmd.Connection.Close();
                 }

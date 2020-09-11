@@ -31,6 +31,7 @@ namespace NDV4Sharp
             this.Text = "Есть ли жизнь на марсе?";
             this.bInsertMarker.Enabled = false;
             this.buttonExcel.Enabled = false;
+            this.bStartAnalysis.Enabled = false;
 
             this.createStripMenuItem.Click += new EventHandler(this.createStripMenuItem_Click);
             
@@ -56,23 +57,20 @@ namespace NDV4Sharp
         }
 
         private void createStripMenuItem_Click(object sender, EventArgs e)
-        {
-            
-            if (CheckC || CheckSharp)
+        {            
+            if (CheckC || CheckSharp || CheckFortran)
             {
                 CreateNewProject createNewProject = new CreateNewProject(bInsertMarker);
                 createNewProject.Show();
             }
             else
                 MessageBox.Show("Please, choice language!");
-            //LInformation = "Create project!";
-
         }
 
         private void openStripMenuItem_Click(object sender, EventArgs e)
         {
             //LInformation = "Open project!";
-            OpenFile openFileDB = new OpenFile();
+            OpenFile openFileDB = new OpenFile(bStartAnalysis);
             openFileDB.openFileDB();
             buttonExcel.Enabled = true;
         }

@@ -17,15 +17,22 @@ namespace NDV4Sharp
 
         public SQLiteCommand SqlCmd { get; set; }
 
-        //public string NameProject { get; set; }
         public string PathLocation { get; set; }
 
-        //public string PathSourcesFolder { get; set; }
+        public Button BAnalysis { get; set; }
 
         public string DbFileName { get; set; }
+
         public OpenFile() {
             DbConn = new SQLiteConnection();
             SqlCmd = new SQLiteCommand();
+        }
+
+        public OpenFile (Button bAnalysis)
+        {
+            DbConn = new SQLiteConnection();
+            SqlCmd = new SQLiteCommand();
+            BAnalysis = bAnalysis;
         }
 
         public void openFileDB()
@@ -58,6 +65,7 @@ namespace NDV4Sharp
             InfoOpenProject.SqlCmd = SqlCmd;
             InfoOpenProject.PathLocation = Path.GetDirectoryName(ofd.FileName);
             MessageBox.Show("Open DB - OK");
+            BAnalysis.Enabled = true;
         }
     }
 }

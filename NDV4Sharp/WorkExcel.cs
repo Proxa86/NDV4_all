@@ -179,7 +179,7 @@ namespace NDV4Sharp
                         string idBin = dTableBinName.Rows[i].ItemArray[1].ToString();
 
                         DataTable dTableBinMarker = new DataTable();
-                        SqlQuery = "SELECT markerBin FROM BinMarker WHERE idBin = " + idBin;
+                        SqlQuery = "SELECT DISTINCT markerBin FROM BinMarker WHERE idBin = " + idBin;
                         adapterBin = new SQLiteDataAdapter(SqlQuery, InfoOpenProject.DbConn);
                         adapterBin.Fill(dTableBinMarker);
                         if (dTableBinMarker.Rows.Count > 0)
@@ -284,6 +284,12 @@ namespace NDV4Sharp
                 return;
             }
 
+            if (!(Form1.CheckSharp || Form1.CheckC || Form1.CheckFortran))
+            {
+                MessageBox.Show("Please, choose language!");
+                return;
+            }
+                
             try
             {
                 var excelApp = new Excel.Application();
@@ -297,38 +303,80 @@ namespace NDV4Sharp
                 if(Form1.CheckSharp)
                 {
                     SqlQuery = "SELECT pathLabFiles, marker FROM WorkMarker WHERE extension = '.cs' AND markerInBin is NULL";
-                    SQLiteDataAdapter adapter = new SQLiteDataAdapter(SqlQuery, InfoOpenProject.DbConn);
-                    adapter.Fill(dTableSrc);
+                    SQLiteDataAdapter adapter_cs = new SQLiteDataAdapter(SqlQuery, InfoOpenProject.DbConn);
+                    adapter_cs.Fill(dTableSrc);
+                    SqlQuery = "SELECT pathLabFiles, marker FROM WorkMarker WHERE extension = '.CS' AND markerInBin is NULL";
+                    SQLiteDataAdapter adapter_CS = new SQLiteDataAdapter(SqlQuery, InfoOpenProject.DbConn);
+                    adapter_CS.Fill(dTableSrc);
                 }
                     
                 else if(Form1.CheckC)
                 {
                     SqlQuery = "SELECT pathLabFiles, marker FROM WorkMarker WHERE extension = '.c' AND markerInBin is NULL";
-                    SQLiteDataAdapter adapterC = new SQLiteDataAdapter(SqlQuery, InfoOpenProject.DbConn);
-                    adapterC.Fill(dTableSrc);
+                    SQLiteDataAdapter adapter_c = new SQLiteDataAdapter(SqlQuery, InfoOpenProject.DbConn);
+                    adapter_c.Fill(dTableSrc);
+                    SqlQuery = "SELECT pathLabFiles, marker FROM WorkMarker WHERE extension = '.C' AND markerInBin is NULL";
+                    SQLiteDataAdapter adapter_C = new SQLiteDataAdapter(SqlQuery, InfoOpenProject.DbConn);
+                    adapter_C.Fill(dTableSrc);
                     SqlQuery = "SELECT pathLabFiles, marker FROM WorkMarker WHERE extension = '.cc' AND markerInBin is NULL";
-                    SQLiteDataAdapter adapterCC = new SQLiteDataAdapter(SqlQuery, InfoOpenProject.DbConn);
-                    adapterCC.Fill(dTableSrc);
+                    SQLiteDataAdapter adapter_cc = new SQLiteDataAdapter(SqlQuery, InfoOpenProject.DbConn);
+                    adapter_cc.Fill(dTableSrc);
+                    SqlQuery = "SELECT pathLabFiles, marker FROM WorkMarker WHERE extension = '.CC' AND markerInBin is NULL";
+                    SQLiteDataAdapter adapter_CC = new SQLiteDataAdapter(SqlQuery, InfoOpenProject.DbConn);
+                    adapter_CC.Fill(dTableSrc);
                     SqlQuery = "SELECT pathLabFiles, marker FROM WorkMarker WHERE extension = '.cpp' AND markerInBin is NULL";
-                    SQLiteDataAdapter adapterCPP = new SQLiteDataAdapter(SqlQuery, InfoOpenProject.DbConn);
-                    adapterCPP.Fill(dTableSrc);
+                    SQLiteDataAdapter adapter_cpp = new SQLiteDataAdapter(SqlQuery, InfoOpenProject.DbConn);
+                    adapter_cpp.Fill(dTableSrc);
+                    SqlQuery = "SELECT pathLabFiles, marker FROM WorkMarker WHERE extension = '.CPP' AND markerInBin is NULL";
+                    SQLiteDataAdapter adapter_CPP = new SQLiteDataAdapter(SqlQuery, InfoOpenProject.DbConn);
+                    adapter_CPP.Fill(dTableSrc);
                     SqlQuery = "SELECT pathLabFiles, marker FROM WorkMarker WHERE extension = '.cxx' AND markerInBin is NULL";
-                    SQLiteDataAdapter adapterCXX = new SQLiteDataAdapter(SqlQuery, InfoOpenProject.DbConn);
-                    adapterCXX.Fill(dTableSrc);
+                    SQLiteDataAdapter adapter_cxx = new SQLiteDataAdapter(SqlQuery, InfoOpenProject.DbConn);
+                    adapter_cxx.Fill(dTableSrc);
+                    SqlQuery = "SELECT pathLabFiles, marker FROM WorkMarker WHERE extension = '.CXX' AND markerInBin is NULL";
+                    SQLiteDataAdapter adapter_CXX = new SQLiteDataAdapter(SqlQuery, InfoOpenProject.DbConn);
+                    adapter_CXX.Fill(dTableSrc);
                     SqlQuery = "SELECT pathLabFiles, marker FROM WorkMarker WHERE extension = '.h' AND markerInBin is NULL";
-                    SQLiteDataAdapter adapterH = new SQLiteDataAdapter(SqlQuery, InfoOpenProject.DbConn);
-                    adapterH.Fill(dTableSrc);
+                    SQLiteDataAdapter adapter_h = new SQLiteDataAdapter(SqlQuery, InfoOpenProject.DbConn);
+                    adapter_h.Fill(dTableSrc);
+                    SqlQuery = "SELECT pathLabFiles, marker FROM WorkMarker WHERE extension = '.H' AND markerInBin is NULL";
+                    SQLiteDataAdapter adapter_H = new SQLiteDataAdapter(SqlQuery, InfoOpenProject.DbConn);
+                    adapter_H.Fill(dTableSrc);
                     SqlQuery = "SELECT pathLabFiles, marker FROM WorkMarker WHERE extension = '.hh' AND markerInBin is NULL";
-                    SQLiteDataAdapter adapterHH = new SQLiteDataAdapter(SqlQuery, InfoOpenProject.DbConn);
-                    adapterHH.Fill(dTableSrc);
+                    SQLiteDataAdapter adapter_hh = new SQLiteDataAdapter(SqlQuery, InfoOpenProject.DbConn);
+                    adapter_hh.Fill(dTableSrc);
+                    SqlQuery = "SELECT pathLabFiles, marker FROM WorkMarker WHERE extension = '.HH' AND markerInBin is NULL";
+                    SQLiteDataAdapter adapter_HH = new SQLiteDataAdapter(SqlQuery, InfoOpenProject.DbConn);
+                    adapter_HH.Fill(dTableSrc);
                     SqlQuery = "SELECT pathLabFiles, marker FROM WorkMarker WHERE extension = '.hpp' AND markerInBin is NULL";
-                    SQLiteDataAdapter adapterHPP = new SQLiteDataAdapter(SqlQuery, InfoOpenProject.DbConn);
-                    adapterHPP.Fill(dTableSrc);
+                    SQLiteDataAdapter adapter_hpp = new SQLiteDataAdapter(SqlQuery, InfoOpenProject.DbConn);
+                    adapter_hpp.Fill(dTableSrc);
+                    SqlQuery = "SELECT pathLabFiles, marker FROM WorkMarker WHERE extension = '.HPP' AND markerInBin is NULL";
+                    SQLiteDataAdapter adapter_HPP = new SQLiteDataAdapter(SqlQuery, InfoOpenProject.DbConn);
+                    adapter_HPP.Fill(dTableSrc);
                     SqlQuery = "SELECT pathLabFiles, marker FROM WorkMarker WHERE extension = '.hxx' AND markerInBin is NULL";
-                    SQLiteDataAdapter adapterHXX = new SQLiteDataAdapter(SqlQuery, InfoOpenProject.DbConn);
-                    adapterHXX.Fill(dTableSrc);
+                    SQLiteDataAdapter adapter_hxx = new SQLiteDataAdapter(SqlQuery, InfoOpenProject.DbConn);
+                    adapter_hxx.Fill(dTableSrc);
+                    SqlQuery = "SELECT pathLabFiles, marker FROM WorkMarker WHERE extension = '.HXX' AND markerInBin is NULL";
+                    SQLiteDataAdapter adapter_HXX = new SQLiteDataAdapter(SqlQuery, InfoOpenProject.DbConn);
+                    adapter_HXX.Fill(dTableSrc);
                 }
-                
+                else if (Form1.CheckFortran)
+                {
+                    SqlQuery = "SELECT pathLabFiles, marker FROM WorkMarker WHERE extension = '.f90' AND markerInBin is NULL";
+                    SQLiteDataAdapter adapter_f90 = new SQLiteDataAdapter(SqlQuery, DbConn);
+                    adapter_f90.Fill(dTableSrc);
+                    SqlQuery = "SELECT pathLabFiles, marker FROM WorkMarker WHERE extension = '.F90' AND markerInBin is NULL";
+                    SQLiteDataAdapter adapter_F90 = new SQLiteDataAdapter(SqlQuery, DbConn);
+                    adapter_F90.Fill(dTableSrc);
+                    SqlQuery = "SELECT pathLabFiles, marker FROM WorkMarker WHERE extension = '.f' AND markerInBin is NULL";
+                    SQLiteDataAdapter adapter_f = new SQLiteDataAdapter(SqlQuery, DbConn);
+                    adapter_f.Fill(dTableSrc);
+                    SqlQuery = "SELECT pathLabFiles, marker FROM WorkMarker WHERE extension = '.F' AND markerInBin is NULL";
+                    SQLiteDataAdapter adapter_F = new SQLiteDataAdapter(SqlQuery, DbConn);
+                    adapter_F.Fill(dTableSrc);
+                }
+
 
                 int i;
 
