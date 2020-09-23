@@ -10,7 +10,6 @@ using System.Windows.Forms;
 using System.IO;
 using System.Data.SQLite;
 using Microsoft.VisualBasic.FileIO;
-using Microsoft.Office.Interop.Excel;
 
 namespace NDV4Sharp
 {
